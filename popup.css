@@ -3,18 +3,22 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+html {
+  width: 142px;
+  height:180px;
+}
 body {
   font-family: helvetica, arial, sans-serif;
   font-size: 12px;
   overflow: hidden;
 }
-a {
-  color:#0000CC;
-  text-decoration: underline;
-  cursor: pointer;
+
+
+h1{
+  font-size:22px;
+  color : white;
+  text-align:center;
 }
-
-
 #title {
   display: block;
   margin-left: auto;
@@ -22,4 +26,22 @@ a {
 .error {
   white-space: nowrap;
   color: red;
+}
+
+.btn-default, .btn-default:hover, .btn-default:active, .btn-default:visited {
+    background-color: #3b5998 !important;
+    border-color: #3b5998 !important;
+    width: 100px !important;
+    color: white !important;
+    height: 46px !important;
+    margin-left:24px !important;
+    margin-bottom : 10px !important;
+    border-radius: 5px !important;
+  }
+
+
+
+.fbbtn{
+  margin-left:24px;
+  margin-bottom : 10px;
 }

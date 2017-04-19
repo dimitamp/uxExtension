@@ -33,14 +33,15 @@ chrome.tabs.onUpdated.addListener(onFacebookLogin);
 var getFbInfo=function(){
   chrome.storage.local.get(["accessToken"], function(accTok){
     if (accTok.accessToken) {
-      var url="https://graph.facebook.com/v2.6/me?access_token="+accTok.accessToken;
+      var url="https://graph.facebook.com/v2.6/me?fields=first_name,last_name&access_token="+accTok.accessToken;
       var xhr = new XMLHttpRequest();
       xhr.open("GET", url, true);
       xhr.setRequestHeader("Content-type","application/json");
       xhr.onreadystatechange = function() {
         if (xhr.readyState == XMLHttpRequest.DONE) {
-          var name=JSON.parse(xhr.response).name;
-          chrome.storage.local.set({ "name": name }, function(){
+          var data=JSON.parse(xhr.response);
+          var user=data.first_name+data.last_name;
+          chrome.storage.local.set({ "user": user }, function(){
           });
           }
         }

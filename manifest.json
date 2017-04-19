@@ -21,6 +21,11 @@
           "tabs",
           "activeTab",
           "https://floating-depths-67676.herokuapp.com/*",
-          "storage"
+          "storage",
+          "https://www.youtube.com/*",
+          "http://animefreak.tv/*",
+          "https://developers.facebook.com/*"
+
+
    ]
 }
