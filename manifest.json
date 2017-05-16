@@ -2,30 +2,27 @@
   "manifest_version":2,
   "name":"ThesisExtension",
   "description":"get Chrome History /Login User with Fb/ Get Fb user Likes/ Store everything in Db",
-  "version":"1.0",
+  "version":"0.8",
   "background": {
-   "scripts": ["background.js"]
- },
+    "scripts": ["js/trackTime.js", "js/background.js"]
+  },
   "browser_action": {
    "default_title": "History",
-   "default_popup": "popup.html",
-   "default_icon": "history2.png"
+   "default_popup": "/html/popup.html",
+   "default_icon": "/images/history2.png"
  },
   "icons":{
-               "16":"history.png",
-               "48": "history.png",
-              "128": "history.png"
+               "16":"/images/history.png",
+               "48": "/images/history.png",
+              "128": "/images/history.png"
 },
   "permissions": [
           "history",
           "tabs",
+          "alarms",
+          "idle",
           "activeTab",
           "https://floating-depths-67676.herokuapp.com/*",
-          "storage",
-          "https://www.youtube.com/*",
-          "http://animefreak.tv/*",
-          "https://developers.facebook.com/*"
-
-
+          "storage"
    ]
 }
