@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="/css/switch.css" rel="stylesheet" type="text/css">
+  <link href="/css/popup.css" rel="stylesheet" type="text/css">
+  <script src="/js/popup.js "></script>
+</head>
+<body background="/images/popupbackground.jpg" class="img-fluid" alt="Responsive image">
+  <a href="/html/about.html"><h1 id="title">UxExtension</h1></a>
+  <div class="fbbtn">
+    <a target="_blank" href="https://www.facebook.com/dialog/oauth?client_id=1934782296755736&response_type=token&scope=email&redirect_uri=https://floating-depths-67676.herokuapp.com/fb">
+      <img src="/images/fblogin.png"/>
+    </a>
+    </div>
+      <button id="fetchBtn" class="btn-default  ">Save History
+        <img class="loading" id="loadingHistory" src="/images/loading1.gif" style="visibility: hidden"/>
+      </button>
+      <button id="profileBtn" class="btn-default  ">
+        Create Profile
+        <img class="loading" id="loadingProfile" src="/images/loading1.gif" style="visibility: hidden"/>
+      </button>
+
+    <div class="onoffswitch center">
+      <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+      <label class="onoffswitch-label" for="myonoffswitch">
+        <span class="onoffswitch-inner" ></span>
+        <span class="onoffswitch-switch"></span>
+      </label>
+    </div>
+
+  </body>
+
+  </html>

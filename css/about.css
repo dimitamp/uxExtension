@@ -1,0 +1,33 @@
+#heading{
+  color :white;
+  font-size: 20px;
+  text-decoration:underline;
+  margin-left:105px;
+  margin-right:25px;
+}
+
+html{
+  width:460px;
+  height:auto;
+}
+#backBtn{
+  width:25px;
+  height:25px;
+  margin-left:3px;
+  margin-top:3px;
+}
+
+#basicInfo{
+  position:relative;
+  margin-left:25px;
+  margin-right:25px;
+  font-size:18px;
+  text-align:center;
+  color: 	white;
+}
+
+.img-fluid {
+    width: 100%;
+    background-repeat:no-repeat;
+    background-size:100% 100%;
+}
