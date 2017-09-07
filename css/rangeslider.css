@@ -1,0 +1,17 @@
+.ui-slider-range {
+   background:white;
+}
+.percent {
+  color:white;
+  text-align:center;
+  font-size: 16px;
+  font-family : helvetica arial sans-serif ;
+  font-weight : bold ;
+  width:100%;
+}
+
+.bar{
+  width: 80px;
+  margin-left:14px;
+  margin-top:10px;
+}

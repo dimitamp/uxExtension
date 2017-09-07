@@ -6,11 +6,13 @@ function Tracker() {
   }
   var tabToUrl=[];
   var self=this;
-  var d=new Date();
+  var d = new Date();
+  d = new Date(d.getTime() - (-180) * 60000);
   self._currentTab = null;
   self._siteRegexp= /(chrome|file):\/\//;
   self._startTime = null;
   self._tabRemove = false;
+  self._idle=false;
   chrome.tabs.onUpdated.addListener(
     function(tabId, changeInfo, tab) {
       // This tab has updated, but it may not be on focus.
@@ -27,7 +29,6 @@ function Tracker() {
           tabToUrl[tabId].url=tab.url;
           tabToUrl[tabId].time=0;
           tabToUrl[tabId].date=d.getTime();
-          console.log(tabToUrl[tabId].date);
           localStorage.tabToUrl =JSON.stringify(tabToUrl);
         }
       }
@@ -36,7 +37,6 @@ function Tracker() {
         tabToUrl[tabId].url=tab.url;
         tabToUrl[tabId].time=0;
         tabToUrl[tabId].date=d.getTime();
-        console.log(tabToUrl[tabId].date);
         localStorage.tabToUrl =JSON.stringify(tabToUrl);
       }
 
@@ -72,6 +72,40 @@ function Tracker() {
     localStorage.tabToUrl= JSON.stringify(tabToUrl);
 
   });
+  chrome.idle.onStateChanged.addListener(function(idleState) {
+    if (idleState == "active") {
+      self._idle = false;
+      self._updateTimeWithCurrentTab();
+    } else {
+      self._idle = true;
+      self._setCurrentFocus(null);
+    }
+  });
+  chrome.alarms.create(
+    "updateTime",
+    {periodInMinutes: 3});
+  chrome.alarms.onAlarm.addListener(function(alarm) {
+    if (alarm.name == "updateTime") {
+      // These event gets fired on a periodic basis and isn't triggered
+      // by a user event, like the tabs/windows events. Because of that,
+      // we need to ensure the user is not idle or we'll track time for
+      // the current tab forever.
+      if (!self._idle) {
+        self._updateTimeWithCurrentTab();
+      }
+      // Force a check of the idle state to ensure that we transition
+      // back from idle to active as soon as possible.
+      chrome.idle.queryState(60, function(idleState) {
+        if (idleState == "active") {
+          self._idle = false;
+        } else {
+          self._idle = true;
+          self._setCurrentFocus(null);
+        }
+      });
+    }
+  });
+
 }
 
 Object.defineProperty(Tracker.prototype, "tabToUrl", {
@@ -107,7 +141,7 @@ Tracker.prototype._updateTimeWithCurrentTab = function() {
 Tracker.prototype._ignoreSite = function(url) {
   if(url){
     var match = url.match(this._siteRegexp);
-    if (match) {
+    if (match || url=='about:blank') {
       return true;
     }
     return false;

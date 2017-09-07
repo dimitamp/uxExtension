@@ -1,7 +1,7 @@
 //get document in order to access eleemnts
 document.addEventListener('DOMContentLoaded', function() {
   //fetch btn to catch click event
-  var fetchBtn = document.getElementById('fetchBtn');
+  var fetchBtn = document.getElementById('saveHistoryBtn');
   fetchBtn.addEventListener('click', function() {
     document.getElementById('loadingHistory').style.visibility="visible";
     chrome.storage.local.get(["user"], function(fbName){
@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', function() {
           chrome.history.search({'text': '','maxResults':20000,'startTime':lastUpdateTime},function(results){
           historyItems=resEdit(results);
           saveHistory(JSON.stringify(historyItems),fbName,Object.keys(historyItems).length);
+          chrome.storage.local.set({ "historySaved": true }, function(){
+
+          });
           });
         });
 
@@ -25,8 +28,13 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('loadingProfile').style.visibility="visible";
     chrome.storage.local.get(["user"], function(fbName){
       if(fbName){
-        //alert(document.getElementById('profileType').style.content);
-        createProfile(fbName,"general");
+        //allow to create profile only after history is saved
+        chrome.storage.local.get(["historySaved"], function(flag){
+
+          if(flag){
+        createProfile(fbName,  (document.getElementById('percent').textContent));
+      }
+      });
       }
     });
   }, false);
@@ -34,10 +42,10 @@ document.addEventListener('DOMContentLoaded', function() {
 },false);
 
 
-var createProfile= function(fbName,type){
+var createProfile= function(fbName,historyPercent){
   var url="https://floating-depths-67676.herokuapp.com/profile"
   var data={};
-  data.profileType=type;
+  data.historyPercent=parseInt(historyPercent)/100;
   data.user=fbName.user;
   var xhr = new XMLHttpRequest();
   xhr.open("POST", url, true);
@@ -79,6 +87,7 @@ var saveHistory= function(historyItems,fbName,len){
   data.user=fbName.user;
   data.historyItems=historyItems;
   var xhr = new XMLHttpRequest();
+  xhr.timeout=60000;
   xhr.open("POST", url, true);
   xhr.setRequestHeader("Content-type","application/json");
   xhr.onreadystatechange = function() {

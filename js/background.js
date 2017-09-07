@@ -30,19 +30,30 @@ function onFacebookLogin(){
 
 chrome.tabs.onUpdated.addListener(onFacebookLogin);
 
-var getFbInfo=function(){
-  chrome.storage.local.get(["accessToken"], function(accTok){
-    if (accTok.accessToken) {
-      var url="https://graph.facebook.com/v2.6/me?fields=first_name,last_name&access_token="+accTok.accessToken;
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", url, true);
-      xhr.setRequestHeader("Content-type","application/json");
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState == XMLHttpRequest.DONE) {
-          var data=JSON.parse(xhr.response);
-          var user=data.first_name+data.last_name;
-          chrome.storage.local.set({ "user": user }, function(){
-          });
+chrome.alarms.create(
+  "updateProfile",
+  {periodInMinutes: 1});
+  chrome.alarms.onAlarm.addListener(function(alarm) {
+    if (alarm.name == "updateProfile") {
+    //  updateReadNews();
+    }
+  });
+
+
+
+  var getFbInfo=function(){
+    chrome.storage.local.get(["accessToken"], function(accTok){
+      if (accTok.accessToken) {
+        var url="https://graph.facebook.com/v2.6/me?fields=first_name,last_name&access_token="+accTok.accessToken;
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader("Content-type","application/json");
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == XMLHttpRequest.DONE) {
+            var data=JSON.parse(xhr.response);
+            var user=data.first_name+data.last_name;
+            chrome.storage.local.set({ "user": user }, function(){
+            });
           }
         }
         xhr.send(null);
@@ -50,5 +61,27 @@ var getFbInfo=function(){
     });
   }
 
-//var sites = new Sites();
-var tracker = new Tracker();
+  var updateReadNews = function (){
+    chrome.storage.local.get(["user"], function(fbName){
+      if(fbName){
+        var url="https://floating-depths-67676.herokuapp.com/updateReadNews";
+        var xhr = new XMLHttpRequest();
+        var data={};
+        data.user=fbName.user;
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type","application/json");
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == XMLHttpRequest.DONE) {
+            console.log(xhr.response);
+          }
+        }
+        xhr.send(JSON.stringify(data));
+      }
+    });
+  }
+  //check whether user has saved history for the first time and then start saving single websites
+chrome.storage.local.get(["historySaved"], function(flag){
+  if(flag){
+  var tracker = new Tracker();
+}
+});
