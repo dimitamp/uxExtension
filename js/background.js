@@ -32,10 +32,16 @@ chrome.tabs.onUpdated.addListener(onFacebookLogin);
 
 chrome.alarms.create(
   "updateProfile",
-  {periodInMinutes: 1});
+  {periodInMinutes: 1440});
+chrome.alarms.create(
+  "updateNews",
+  {periodInMinutes: 100});
   chrome.alarms.onAlarm.addListener(function(alarm) {
-    if (alarm.name == "updateProfile") {
-    //  updateReadNews();
+    if (alarm.name == "updateNews") {
+      update("updateReadNews");
+    }
+    if( alarm.name== "profile/update"){
+      update("updateProfile");
     }
   });
 
@@ -61,10 +67,10 @@ chrome.alarms.create(
     });
   }
 
-  var updateReadNews = function (){
+  var update = function (item){
     chrome.storage.local.get(["user"], function(fbName){
       if(fbName){
-        var url="https://floating-depths-67676.herokuapp.com/updateReadNews";
+        var url="https://floating-depths-67676.herokuapp.com/"+item;
         var xhr = new XMLHttpRequest();
         var data={};
         data.user=fbName.user;

@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 var createProfile= function(fbName,historyPercent){
-  var url="https://floating-depths-67676.herokuapp.com/profile"
+  var url="https://floating-depths-67676.herokuapp.com/profile/create"
   var data={};
   data.historyPercent=parseInt(historyPercent)/100;
   data.user=fbName.user;
