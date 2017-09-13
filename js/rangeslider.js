@@ -5,7 +5,7 @@ $(function() {
     $projectBar.slider({
       range: "min",
       animate: true,
-      value: 100,
+      value: 1,
       min: 1,
       max: 100,
       step: 1,

@@ -13,10 +13,8 @@ function onFacebookLogin(){
             // in my extension I have used mootools method: parseQueryString. The following code is just an example ;)
             var accessToken = params.split('&')[0];
             accessToken = accessToken.split('=')[1];
-
-            chrome.storage.local.set({ "accessToken": accessToken }, function(){
-
-            });
+            localStorage.accessToken = accessToken;
+            //chrome.storage.local.set({ "accessToken": accessToken }, function(){  });
 
 
             getFbInfo();
@@ -48,9 +46,10 @@ chrome.alarms.create(
 
 
   var getFbInfo=function(){
-    chrome.storage.local.get(["accessToken"], function(accTok){
-      if (accTok.accessToken) {
-        var url="https://graph.facebook.com/v2.6/me?fields=first_name,last_name&access_token="+accTok.accessToken;
+    //chrome.storage.local.get(["accessToken"], function(accTok){
+      //if (accTok.accessToken) {
+      if(localStorage.accessToken){
+        var url="https://graph.facebook.com/v2.6/me?fields=first_name,last_name&access_token="+localStorage.accessToken;
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
         xhr.setRequestHeader("Content-type","application/json");
@@ -58,22 +57,23 @@ chrome.alarms.create(
           if (xhr.readyState == XMLHttpRequest.DONE) {
             var data=JSON.parse(xhr.response);
             var user=data.first_name+data.last_name;
-            chrome.storage.local.set({ "user": user }, function(){
-            });
+            //chrome.storage.local.set({ "user": user }, function(){});
+            localStorage.user = user;
           }
         }
         xhr.send(null);
       }
-    });
+    //});
   }
 
   var update = function (item){
-    chrome.storage.local.get(["user"], function(fbName){
-      if(fbName){
+    //chrome.storage.local.get(["user"], function(fbName){
+      var user = localStorage.user;
+      if(user){
         var url="https://floating-depths-67676.herokuapp.com/"+item;
         var xhr = new XMLHttpRequest();
         var data={};
-        data.user=fbName.user;
+        data.user=user;
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-type","application/json");
         xhr.onreadystatechange = function() {
@@ -83,11 +83,12 @@ chrome.alarms.create(
         }
         xhr.send(JSON.stringify(data));
       }
-    });
+    //});
   }
   //check whether user has saved history for the first time and then start saving single websites
-chrome.storage.local.get(["historySaved"], function(flag){
-  if(flag){
+//chrome.storage.local.get(["historySaved"], function(flag){
+  //if(flag){
+
   var tracker = new Tracker();
-}
-});
+
+//});
