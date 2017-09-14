@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="/css/stats.css" rel="stylesheet" type="text/css">
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/Chart.min.js" type="text/javascript"></script>
+  <script src="/js/stats.js" type="text/javascript"></script>
+</head>
+<body background="/images/popupbackground.jpg" class="img-fluid" alt="Responsive image">
+  <div class="container">
+    <div class="row">
+      <a href="/html/popup.html">
+        <img src="/images/back.png" id="backBtn"></img>
+      </a>
+      <label id="heading">Statistics</label>
+    </div>
+    <div class="row" id="buttonsRow">
+      <button id="timeChartButton" class="btn-default">TimeChart</button>
+      <button id="topicsChartButton" class="btn-default">TopicsChart</button>
+      <button id="topSitesButton" class="btn-default">TopSites</button>
+    </div>
+    <div id="canvasContainer">
+    <canvas id="myChart" width="400" height="400"></canvas>
+  </div>
+  </body>
+  </html>

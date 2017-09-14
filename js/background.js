@@ -33,7 +33,7 @@ chrome.alarms.create(
   {periodInMinutes: 1440});
 chrome.alarms.create(
   "updateNews",
-  {periodInMinutes: 100});
+  {periodInMinutes: 180});
   chrome.alarms.onAlarm.addListener(function(alarm) {
     if (alarm.name == "updateNews") {
       update("updateReadNews");

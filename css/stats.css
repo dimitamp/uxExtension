@@ -1,0 +1,38 @@
+#heading{
+  color :white;
+  font-size: 20px;
+  text-decoration:underline;
+  margin-left:180px;
+  margin-right:25px;
+}
+
+html{
+  width:500px;
+  height:auto;
+}
+#backBtn{
+  width:25px;
+  height:25px;
+  margin-left:3px;
+  margin-top:3px;
+}
+
+.btn-default, .btn-default:hover, .btn-default:active, .btn-default:visited {
+    background-color: #3b5998 !important;
+    border-color: #3b5998 !important;
+    width: 100px !important;
+    color: white !important;
+    height: 46px !important;
+    margin-left:24px !important;
+    margin-right:24px !important;
+    margin-bottom : 10px !important;
+    border-radius: 5px !important;
+  }
+
+.row{
+  margin-top : 10px;
+}
+
+#buttonsRow{
+  margin-left: 18px;
+}
