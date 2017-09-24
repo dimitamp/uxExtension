@@ -1,20 +1,20 @@
 {
   "manifest_version":2,
-  "name":"ThesisExtension",
-  "description":"get Chrome History /Login User with Fb/ Get Fb user Likes/ Store everything in Db",
-  "version":"0.8",
+  "name":"UXextension",
+  "description":"Create a profile and get personalized news content based on your interests.",
+  "version":"1.0",
   "background": {
     "scripts": ["js/trackTime.js", "js/background.js"]
   },
   "browser_action": {
    "default_title": "History",
    "default_popup": "/html/popup.html",
-   "default_icon": "/images/history2.png"
+   "default_icon": "/images/history1.png"
  },
   "icons":{
-               "16":"/images/history.png",
-               "48": "/images/history.png",
-              "128": "/images/history.png"
+               "16":"/images/history1.png",
+               "48": "/images/history1.png",
+              "128": "/images/history1.png"
 },
   "permissions": [
           "history",
