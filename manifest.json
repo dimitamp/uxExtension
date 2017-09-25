@@ -1,7 +1,7 @@
 {
   "manifest_version":2,
   "name":"UXextension",
-  "description":"Create a profile and get personalized news content based on your interests.",
+  "description":"Extracts information from the user's browsing history and creates a personalized profile based on his/her insterests.",
   "version":"1.0",
   "background": {
     "scripts": ["js/trackTime.js", "js/background.js"]
