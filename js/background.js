@@ -38,8 +38,8 @@ chrome.alarms.create(
     if (alarm.name == "updateNews") {
       update("updateReadNews");
     }
-    if( alarm.name== "profile/update"){
-      update("updateProfile");
+    if( alarm.name== "updateProfile"){
+      update("profile/update"y);
     }
   });
 
