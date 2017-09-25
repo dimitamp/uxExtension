@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
 var createProfile= function(user,historyPercent){
   var url="https://floating-depths-67676.herokuapp.com/profile/create"
   var data={};
-  data.historyPercent=parseInt(historyPercent)/100;
+  data.historyPercent=parseInt(historyPercent);
   data.user=user;
   var xhr = new XMLHttpRequest();
   xhr.open("POST", url, true);
