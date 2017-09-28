@@ -39,7 +39,7 @@ chrome.alarms.create(
       update("updateReadNews");
     }
     if( alarm.name== "updateProfile"){
-      update("profile/update"y);
+      update("profile/update");
     }
   });
 

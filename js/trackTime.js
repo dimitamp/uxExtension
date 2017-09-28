@@ -17,13 +17,14 @@ function Tracker() {
     function(tabId, changeInfo, tab) {
       // This tab has updated, but it may not be on focus.
       // It is more reliable to request the current tab URL.
+      if(changeInfo.status==='complete'){
       tabToUrl=self.tabToUrl;
       if(tabToUrl[tabId]){
         if(tabToUrl[tabId].url!=tab.url){
           var tmp=tabToUrl[tabId].time+ (new Date()-self._startTime)/1000;
           if(!self._ignoreSite(tabToUrl[tabId].url)){
             self._saveSite(tabToUrl[tabId]);
-            console.log(tabToUrl[tabId].url+" changed after "+tmp+" seconds");
+            //console.log(tabToUrl[tabId].url+" changed after "+tmp+" seconds");
           }
           tabToUrl[tabId]={};
           tabToUrl[tabId].url=tab.url;
@@ -41,6 +42,7 @@ function Tracker() {
       }
 
       self._updateTimeWithCurrentTab();
+    }
     }
   );
   chrome.tabs.onActivated.addListener(
@@ -61,16 +63,18 @@ function Tracker() {
     }
   );
   chrome.tabs.onRemoved.addListener(function(tabId, info) {
+    setTimeout(function() {
+  //your code to be executed after 1 second
     self._setTabRemove(true);
     tabToUrl=self.tabToUrl;
     var tmp=tabToUrl[tabId].time;
     if(!self._ignoreSite(tabToUrl[tabId].url)){
       self._saveSite(tabToUrl[tabId]);
-      console.log(tabToUrl[tabId].url+" removed after "+tmp+" seconds");
+      //console.log(tabToUrl[tabId].url+" removed after "+tmp+" seconds");
     }
     delete tabToUrl[tabId];
     localStorage.tabToUrl= JSON.stringify(tabToUrl);
-
+}, 1000);
   });
   chrome.idle.onStateChanged.addListener(function(idleState) {
     if (idleState == "active") {
@@ -139,8 +143,9 @@ function Tracker() {
 
   Tracker.prototype._ignoreSite = function(url) {
     if(url){
-      var match = url.match(this._siteRegexp);
-      if (match || url=='about:blank') {
+      var match1 = url.match(this._siteRegexp);
+      var match2 = url.indexOf('https://l.facebook.com/l.php?u=');
+      if ( match1 || match2!=-1 || url == 'about:blank' ) {
         return true;
       }
       return false;
