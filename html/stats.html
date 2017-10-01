@@ -15,10 +15,11 @@
       </a>
       <label id="heading">Statistics</label>
     </div>
-    <div class="row" id="buttonsRow">
-      <button id="timeChartButton" class="btn-default">TimeChart</button>
-      <button id="topicsChartButton" class="btn-default">TopicsChart</button>
-      <button id="topSitesButton" class="btn-default">TopSites</button>
+    <div class="row" class="buttonsRow">
+      <button id="timeChartButton" title="User's news reading time habits" class="btn-default">NewsTime<br>Chart</button>
+      <button id="topicsChartButton" title="Scores of user's interests " class="btn-default">Interests<br>Chart</button>
+      <button id="topSitesVisitsButton" title="User's top 10 visited sites" class="btn-default">SiteVisits<br>Chart</button>
+      <button id="topSitesTimeButton" title="Average time spent on top sites" class="btn-default">SiteTime<br>Chart</button>
     </div>
     <div id="canvasContainer">
     <canvas id="myChart" width="400" height="400"></canvas>

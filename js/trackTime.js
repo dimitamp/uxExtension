@@ -196,11 +196,10 @@ function Tracker() {
       var url="https://floating-depths-67676.herokuapp.com/history/save";
       var data={};
       data.length=1;
-      data.historyItems=JSON.stringify([{"lastVisitTime":site.date , "url": site.url , "runningTime" : site.time }]);
-      //chrome.storage.local.get(["user"], function(fbName){
+      chrome.history.search({'text': site.url,'maxResults':1,'startTime':0},function(results){
+      data.historyItems=JSON.stringify([{"lastVisitTime":site.date , "url": site.url , "runningTime" : site.time , "visitCount" : results[0].visitCount}]);
 
       data.user=localStorage.user;
-      console.log(JSON.stringify(data));
       var xhr = new XMLHttpRequest();
       xhr.open("POST", url, true);
       xhr.setRequestHeader("Content-type","application/json");
@@ -210,6 +209,6 @@ function Tracker() {
         }
       }
       xhr.send(JSON.stringify(data));
-      //});
+      });
     }
   }

@@ -23,16 +23,15 @@ html{
     width: 100px !important;
     color: white !important;
     height: 46px !important;
-    margin-left:24px !important;
-    margin-right:24px !important;
+    margin-left:20px !important;
     margin-bottom : 10px !important;
     border-radius: 5px !important;
   }
 
 .row{
-  margin-top : 10px;
+  margin-top : 15px;
 }
 
-#buttonsRow{
+.buttonsRow{
   margin-left: 18px;
 }

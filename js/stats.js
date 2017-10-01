@@ -1,11 +1,84 @@
 document.addEventListener('DOMContentLoaded', function()
 {
+
+  var topSitesTimeButton = document.getElementById("topSitesTimeButton");
+  topSitesTimeButton.addEventListener('click', function() {
+    //chrome.storage.local.get(["user"], function(fbName){
+    if(localStorage.user){
+      resetCanvas();
+      getTopSites("avgtime",localStorage.user,function(chartData){
+        var backgroundColors = [];
+        var sites=chartData.labels;
+        var values=chartData.values;
+        var index;
+        for (index = 0 ;index < 10 ; index++){
+          backgroundColors[index] =randomColorGenerator();
+        }
+        var topSitesChart = document.getElementById("myChart").getContext('2d');
+        var myChart = new Chart(topSitesChart, {
+          type: 'bar',
+          data: {
+            labels: ["1","2","3","4","5","6","7","8","9","10"],
+            datasets: [{
+              label : "Top sites avg time spent",
+              data: values,
+              backgroundColor : backgroundColors
+
+            }
+          ]
+        },
+        options: {
+          tooltips: {
+            enabled: true,
+            callbacks: {
+              label: function(tooltipItem, chartData) {
+                return sites[tooltipItem.index]+" : "+values[tooltipItem.index]+" seconds";
+              }
+            }
+          },
+          scales: {
+            yAxes: [
+              {
+                scaleLabel:{
+                  display: true,
+                  labelString: 'Avg Time Spent',
+                  //fontColor: "#FFFFFF",
+                }
+              }
+            ],
+            xAxes: [
+              {
+                scaleLabel:{
+                  display: true,
+                  labelString: 'Sites',
+                  //fontColor: "#FFFFFF",
+                }
+              }
+            ]
+
+          },
+          legend: { display: false },
+          title: {
+            display: true,
+            text: 'Top 10 Visited Sites',
+            fontSize : 16,
+          }
+        }
+
+      });
+    });
+  }
+  //});
+}, false);
+
+
+
   var timeChartButton = document.getElementById("timeChartButton");
   timeChartButton.addEventListener('click', function() {
     //chrome.storage.local.get(["user"], function(fbName){
     if(localStorage.user){
       resetCanvas();
-      getChartData(localStorage.user,function(chartData){
+      getSessionData(localStorage.user,function(chartData){
         var backgroundColors = [];
         var index;
         for (index = 0 ;index < 6 ; index++){
@@ -37,12 +110,12 @@ document.addEventListener('DOMContentLoaded', function()
     //});
   }, false);
 
-  var topSitesButton = document.getElementById("topSitesButton");
-  topSitesButton.addEventListener('click', function() {
+  var topSitesVisitsButton = document.getElementById("topSitesVisitsButton");
+  topSitesVisitsButton.addEventListener('click', function() {
     //chrome.storage.local.get(["user"], function(fbName){
     if(localStorage.user){
       resetCanvas();
-      getTopSites(localStorage.user,function(chartData){
+      getTopSites("visits",localStorage.user,function(chartData){
         var backgroundColors = [];
         var sites=chartData.labels;
         var values=chartData.values;
@@ -56,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function()
           data: {
             labels: ["1","2","3","4","5","6","7","8","9","10"],
             datasets: [{
-              label : "Top Sites",
+              label : "Top sites visit count",
               data: values,
               backgroundColor : backgroundColors
 
@@ -152,7 +225,7 @@ var randomColorGenerator = function () {
 };
 
 
-var getChartData = function (user,callback){
+var getSessionData = function (user,callback){
   var url="https://floating-depths-67676.herokuapp.com/charts/sessionsData";
   var xhr = new XMLHttpRequest();
   var data={};
@@ -184,11 +257,12 @@ var getTopicsData = function (user,callback){
   xhr.send(JSON.stringify(data));
 }
 
-var getTopSites = function (user,callback){
+var getTopSites = function (action,user,callback){
   var url="https://floating-depths-67676.herokuapp.com/charts/topSites";
   var xhr = new XMLHttpRequest();
   var data={};
   data.user=user;
+  data.action=action;
   xhr.open("POST", url, true);
   xhr.setRequestHeader("Content-type","application/json");
   xhr.onreadystatechange = function() {
