@@ -2,7 +2,7 @@
   "manifest_version":2,
   "name":"UXextension",
   "description":"Extracts information from the user's browsing history and creates a personalized profile based on his/her insterests.",
-  "version":"1.1.3",
+  "version":"1.1.4",
   "background": {
     "scripts": ["js/trackTime.js", "js/background.js"]
   },

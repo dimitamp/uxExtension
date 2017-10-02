@@ -28,22 +28,6 @@ function onFacebookLogin(){
 
 chrome.tabs.onUpdated.addListener(onFacebookLogin);
 
-chrome.alarms.create(
-  "updateProfile",
-  {periodInMinutes: 1440});
-chrome.alarms.create(
-  "updateNews",
-  {periodInMinutes: 180});
-  chrome.alarms.onAlarm.addListener(function(alarm) {
-    if (alarm.name == "updateNews") {
-      update("updateReadNews");
-    }
-    if( alarm.name== "updateProfile"){
-      update("profile/update");
-    }
-  });
-
-
 
   var getFbInfo=function(){
     //chrome.storage.local.get(["accessToken"], function(accTok){
@@ -57,37 +41,12 @@ chrome.alarms.create(
           if (xhr.readyState == XMLHttpRequest.DONE) {
             var data=JSON.parse(xhr.response);
             var user=data.first_name+data.last_name;
-            //chrome.storage.local.set({ "user": user }, function(){});
             localStorage.user = user;
           }
         }
         xhr.send(null);
       }
-    //});
   }
-
-  var update = function (item){
-    //chrome.storage.local.get(["user"], function(fbName){
-      var user = localStorage.user;
-      if(user){
-        var url="https://floating-depths-67676.herokuapp.com/"+item;
-        var xhr = new XMLHttpRequest();
-        var data={};
-        data.user=user;
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-type","application/json");
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState == XMLHttpRequest.DONE) {
-            console.log(xhr.response);
-          }
-        }
-        xhr.send(JSON.stringify(data));
-      }
-    //});
-  }
-  //check whether user has saved history for the first time and then start saving single websites
-//chrome.storage.local.get(["historySaved"], function(flag){
-  //if(flag){
 
   var tracker = new Tracker();
 
