@@ -1,4 +1,6 @@
-
+var offset = new Date();
+offset = offset.getTimezoneOffset();
+offset = -180 - offset ;
 
 function Tracker() {
   if (!localStorage .tabToUrl) {
@@ -6,8 +8,6 @@ function Tracker() {
   }
   var tabToUrl=[];
   var self=this;
-  var d = new Date();
-  d = new Date(d.getTime() - (-180) * 60000);
   self._currentTab = null;
   self._siteRegexp= /(chrome|file):\/\//;
   self._startTime = null;
@@ -17,6 +17,7 @@ function Tracker() {
     function(tabId, changeInfo, tab) {
       // This tab has updated, but it may not be on focus.
       // It is more reliable to request the current tab URL.
+      var d = new Date();
       if(changeInfo.status==='complete'){
       tabToUrl=self.tabToUrl;
       if(tabToUrl[tabId]){
@@ -29,7 +30,7 @@ function Tracker() {
           tabToUrl[tabId]={};
           tabToUrl[tabId].url=tab.url;
           tabToUrl[tabId].time=0;
-          tabToUrl[tabId].date=d.getTime();
+          tabToUrl[tabId].date=d.getTime()- offset * 60000;
           localStorage.tabToUrl =JSON.stringify(tabToUrl);
         }
       }
@@ -37,7 +38,7 @@ function Tracker() {
         tabToUrl[tabId]={}
         tabToUrl[tabId].url=tab.url;
         tabToUrl[tabId].time=0;
-        tabToUrl[tabId].date=d.getTime();
+        tabToUrl[tabId].date=d.getTime()- offset * 60000;
         localStorage.tabToUrl =JSON.stringify(tabToUrl);
       }
 
@@ -198,7 +199,7 @@ function Tracker() {
       data.length=1;
       chrome.history.search({'text': site.url,'maxResults':1,'startTime':0},function(results){
       data.historyItems=JSON.stringify([{"lastVisitTime":site.date , "url": site.url , "runningTime" : site.time , "visitCount" : results[0].visitCount}]);
-
+      console.log(data.historyItems);
       data.user=localStorage.user;
       var xhr = new XMLHttpRequest();
       xhr.open("POST", url, true);
