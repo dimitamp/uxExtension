@@ -5,19 +5,19 @@ document.addEventListener('DOMContentLoaded', function() {
   fetchBtn.addEventListener('click', function() {
     document.getElementById('loadingHistory').style.visibility="visible";
     //chrome.storage.local.get(["user"], function(fbName){
-      var user=localStorage.user;
-      if(user){
-        //history search request text:leave empty to get all , maxResults: number ( default 100)
-        lastHistoryUpdate(user,function(lastUpdateTime){
-          chrome.history.search({'text': '','maxResults':20000,'startTime':lastUpdateTime},function(results){
+    var user=localStorage.user;
+    if(user){
+      //history search request text:leave empty to get all , maxResults: number ( default 100)
+      lastHistoryUpdate(user,function(lastUpdateTime){
+        chrome.history.search({'text': '','maxResults':20000,'startTime':lastUpdateTime},function(results){
           historyItems=resEdit(results);
           saveHistory(JSON.stringify(historyItems),user,Object.keys(historyItems).length);
           localStorage.historySaved = "true" ;
           //chrome.storage.local.set({ "historySaved": true }, function(){});
-          });
         });
+      });
 
-      }
+    }
     //});
 
   }, false);
@@ -27,16 +27,35 @@ document.addEventListener('DOMContentLoaded', function() {
   profileBtn.addEventListener('click', function() {
     document.getElementById('loadingProfile').style.visibility="visible";
     //chrome.storage.local.get(["user"], function(fbName){
-      var user = localStorage.user;
-      if(user){
-        //allow to create profile only after history is saved
-        //chrome.storage.local.get(["historySaved"], function(flag){
+    var user = localStorage.user;
+    if(user){
+      //allow to create profile only after history is saved
+      //chrome.storage.local.get(["historySaved"], function(flag){
 
-          if(localStorage.historySaved == "true"){
+      if(localStorage.historySaved == "true"){
         createProfile(user,  (document.getElementById('percent').textContent));
       }
       //});
+    }
+    //});
+  }, false);
+
+
+  var deleteBtn = document.getElementById('deleteBtn');
+  deleteBtn.addEventListener('click', function() {
+    document.getElementById('loadingDelete').style.visibility="visible";
+    //chrome.storage.local.get(["user"], function(fbName){
+    var user = localStorage.user;
+    if(user){
+      //allow to create profile only after history is saved
+      //chrome.storage.local.get(["historySaved"], function(flag){
+
+      if(localStorage.historySaved == "true"){
+        localStorage.historySaved = "false" ;
+        deleteUser(user);
       }
+      //});
+    }
     //});
   }, false);
 
@@ -47,6 +66,24 @@ var createProfile= function(user,historyPercent){
   var url="https://floating-depths-67676.herokuapp.com/profile/create"
   var data={};
   data.historyPercent=parseInt(historyPercent);
+  data.user=user;
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-type","application/json");
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+      document.getElementById('loadingProfile').style.visibility="hidden";
+      alert(xhr.response);
+    }
+  }
+  xhr.send(JSON.stringify(data));
+}
+
+
+
+var deleteUser =  function(user){
+  var url="https://floating-depths-67676.herokuapp.com/profile/delete"
+  var data={};
   data.user=user;
   var xhr = new XMLHttpRequest();
   xhr.open("POST", url, true);
@@ -93,7 +130,7 @@ var saveHistory= function(historyItems,user,len){
   xhr.setRequestHeader("Content-type","application/json");
   xhr.onreadystatechange = function() {
     if (xhr.readyState == XMLHttpRequest.DONE) {
-        document.getElementById('loadingHistory').style.visibility="hidden";
+      document.getElementById('loadingHistory').style.visibility="hidden";
       alert(xhr.response);
     }
   }
