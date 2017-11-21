@@ -1,4 +1,5 @@
-const API_KEY: "9abb4dd1-b5c7-411c-9ed7-c2b7c96e4f7c";
+//Google History API KEY
+const API_KEY: "API-KEY-GOES-HERE";
 
 module.exports(){
 
